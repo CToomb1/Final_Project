@@ -1,25 +1,48 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const { Schema, model } = require("mongoose");
+const bcrypt = require('bcrypt');
+
+const locationSchema = require("./Location");
+
 const UserSchema = new Schema(
     {
-        user: {
+        username: {
             type: String,
-            required: "Enter a username.",
+            required: true,
             unique: true
         },
         password: {
             type: String,
             validate: [({ length }) => length >= 8, "Password should be longer."],
-            required: "Enter password."
+            required: true
         },
-        zipCode: {
-            type: Number,
-            validate: [({ length }) => length === 5, "Zip code should be 5 digits."],
-            required: "Enter zip code."
-        }
+
+        savedLocations: [locationSchema],
+    },
+    {
+        toJSON: {
+            virtuals: true,
+        },
     }
 );
 
-const User = mongoose.model("User", UserSchema);
+userSchema.pre('save', async function (next) {
+    if (this.isNew || this.isModified('password')) {
+        const saltRounds = 10;
+        this.password = await bcrypt.hash(this.password, saltRounds);
+    }
+
+    next();
+});
+
+userSchema.methods.isCorrectPassword = async function (password) {
+    return bcrypt.compare(password, this.password);
+};
+
+userSchema.virtual('locationCount').get(function () {
+    return this.savedLocations.length;
+});
+
+
+const User = model("User", UserSchema);
 
 module.exports = User;
