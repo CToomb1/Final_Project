@@ -2,9 +2,8 @@ import React from 'react';
 
 
 const UserInfoContext = React.createContext({
-    savedLocations: [],
+    savedRecipes: [],
     username: '',
-    locationCount: 0,
     getUserData: () => undefined,
 });
 

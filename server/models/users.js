@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 const bcrypt = require('bcrypt');
 
-const locationSchema = require("./Location");
+const recipeSchema = require("./recipes");
 
 const UserSchema = new Schema(
     {
@@ -16,7 +16,7 @@ const UserSchema = new Schema(
             required: true
         },
 
-        savedLocations: [locationSchema],
+        savedRecipes: [recipeSchema],
     },
     {
         toJSON: {

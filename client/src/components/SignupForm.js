@@ -6,7 +6,7 @@ import { createUser } from '../utils/API';
 import AuthService from '../utils/auth';
 
 function SignupForm({ handleModalClose }) {
-    const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
+    const [userFormData, setUserFormData] = useState({ username: '', password: '' });
     const [validated, setValidation] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const [errorText, setErrorText] = useState('');
@@ -61,19 +61,6 @@ function SignupForm({ handleModalClose }) {
                 </Form.Group>
 
                 <Form.Group>
-                    <Form.Label htmlFor='email'>Email</Form.Label>
-                    <Form.Control
-                        type='email'
-                        placeholder='Your email address'
-                        name='email'
-                        onChange={handleInputChange}
-                        value={userFormData.email}
-                        required
-                    />
-                    <Form.Control.Feedback type='invalid'>Email is required!</Form.Control.Feedback>
-                </Form.Group>
-
-                <Form.Group>
                     <Form.Label htmlFor='password'>Password</Form.Label>
                     <Form.Control
                         type='password'
@@ -86,7 +73,7 @@ function SignupForm({ handleModalClose }) {
                     <Form.Control.Feedback type='invalid'>Password is required!</Form.Control.Feedback>
                 </Form.Group>
                 <Button
-                    disabled={!(userFormData.username && userFormData.email && userFormData.password)}
+                    disabled={!(userFormData.username && userFormData.password)}
                     type='submit'
                     variant='success'>
                     Submit

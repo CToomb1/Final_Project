@@ -41,12 +41,12 @@ module.exports = {
         const token = signToken(user);
         res.json({ token, user });
     },
-    async saveLocation({ user, body }, res) {
+    async Recipe({ user, body }, res) {
         console.log(user);
         try {
             const updatedUser = await User.findOneAndUpdate(
                 { _id: user._id },
-                { $addToSet: { savedLocations: body } },
+                { $addToSet: { savedRecipes: body } },
                 { new: true, runValidators: true }
             );
             return res.json(updatedUser);
@@ -55,10 +55,10 @@ module.exports = {
             return res.status(400).json(err);
         }
     },
-    async deleteLocation({ user, params }, res) {
+    async deleteRecipe({ user, params }, res) {
         const updatedUser = await User.findOneAndUpdate(
             { _id: user._id },
-            { $pull: { savedLocations: { locationId: params.id } } },
+            { $pull: { savedRecipes: { recipeId: params.id } } },
             { new: true }
         );
         if (!updatedUser) {
