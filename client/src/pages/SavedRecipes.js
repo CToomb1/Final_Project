@@ -6,16 +6,16 @@ import UserInfoContext from '../utils/UserInfoContext';
 import * as API from '../utils/API';
 import AuthService from '../utils/auth';
 
-function SavedLocation() {
+function SavedRecipe() {
     const userData = useContext(UserInfoContext);
 
-    const handleDeleteLocation = (locationId) => {
+    const handleDeleteRecipe = (recipeId) => {
         const token = AuthService.loggedIn() ? AuthService.getToken() : null;
 
         if (!token) {
             return false;
         }
-        API.deleteLocation(locationId, token)
+        API.deleteRecipe(recipeId, token)
             .then(() => userData.getUserData())
             .catch((err) => console.log(err));
     };
@@ -24,23 +24,23 @@ function SavedLocation() {
         <>
             <Jumbotron fluid className='text-light bg-dark'>
                 <Container>
-                    <h1>Viewing saved Location!</h1>
+                    <h1>Viewing saved Recipes!</h1>
                 </Container>
             </Jumbotron>
             <Container>
                 <h2>
-                    {userData.savedLocation.length
-                        ? `Viewing ${userData.savedLocation.length} saved ${userData.savedLocation.length === 1 ? 'location' : 'Location'}:`
-                        : 'You have no saved Location!'}
+                    {userData.savedRecipe.length
+                        ? `Viewing ${userData.savedRecipe.length} saved ${userData.savedRecipe.length === 1 ? 'recipe' : 'Recipe'}:`
+                        : 'You have no saved Recipe!'}
                 </h2>
                 <CardColumns>
-                    {userData.savedLocation.map((location) => {
+                    {userData.savedRecipe.map((recipe) => {
                         return (
-                            <Card key={location.locationId} border='dark'>
+                            <Card key={recipe.recipeId} border='dark'>
                                 <Card.Body>
-                                    <Card.Title>{location}</Card.Title>
-                                    <Button className='btn-block btn-danger' onClick={() => handleDeleteLocation(location.locationId)}>
-                                        Delete this location!
+                                    <Card.Title>{recipe}</Card.Title>
+                                    <Button className='btn-block btn-danger' onClick={() => handleDeleteRecipe(recipe.recipeId)}>
+                                        Delete this recipe!
                   </Button>
                                 </Card.Body>
                             </Card>
@@ -52,4 +52,4 @@ function SavedLocation() {
     );
 }
 
-export default SavedLocation;
+export default SavedRecipe;
