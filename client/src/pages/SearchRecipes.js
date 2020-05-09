@@ -3,11 +3,10 @@ import { Jumbotron, Container, Row, Col, Form, Button, Card, CardColumns } from 
 
 import UserInfoContext from '../utils/UserInfoContext';
 import AuthService from '../utils/auth';
-import { saveRecipe, searchRecipe, searchLocation } from '../utils/API';
+import { saveRecipes, searchRecipesAPI, searchLocationAPI } from '../utils/API';
 
-function SearchRecipe() {
-    const [searchedRecipes, setSearchedRecipes] = useState([]);
-    const [searchLocation, setsearchLocation] = useState("");
+function SearchRecipes() {
+    const [searchRecipes, setSearchRecipes] = useState([]);
     const [searchInput, setSearchInput] = useState("");
     const userData = useContext(UserInfoContext);
     const handleFormSubmit = (event) => {
@@ -16,105 +15,126 @@ function SearchRecipe() {
             return false;
         }
 
-        searchRecipe(searchInput)
-            .then((weatherRES) => {
+        let dayOne, dayTwo, dayThree, dayFour, dayFive;
 
-                const dayOne = {
+        searchLocationAPI(searchInput)
+            .then(({ data: weatherRES }) => {
+                let mapping = {
+                    'clear sky': 'American',
+                    'light rain': 'chinese',
+                    'overcast clouds': 'italian',
+                    'light snow': 'japanese',
+                    'snow': 'Mexican',
+                    'scattered clouds': 'Caribbean',
+                    'broken clouds': 'Cajun',
+                }
+
+                dayOne = {
                     cityname: weatherRES.city.name,
                     Datenanme: weatherRES.list[6].dt_txt,
                     IconImage: weatherRES.list[6].weather[0].icon,
                     Temp: weatherRES.list[6].main.temp,
-                    food: weatherRES.list[6].weather[0].description,
+                    food: mapping[weatherRES.list[6].weather[0].description] || "American",
+                    recipeData: "",
+
                 };
-                const dayTwo = {
+                dayTwo = {
                     cityname: weatherRES.city.name,
                     Datenanme: weatherRES.list[14].dt_txt,
                     IconImage: weatherRES.list[14].weather[0].icon,
                     Temp: weatherRES.list[14].main.temp,
-                    food: weatherRES.list[14].weather[0].description,
+                    food: mapping[weatherRES.list[14].weather[0].description] || "American",
                 };
-                const dayThree = {
+                dayThree = {
                     cityname: weatherRES.city.name,
                     Datenanme: weatherRES.list[22].dt_txt,
                     IconImage: weatherRES.list[22].weather[0].icon,
                     Temp: weatherRES.list[22].main.temp,
-                    food: weatherRES.list[22].weather[0].description,
+                    food: mapping[weatherRES.list[22].weather[0].description] || "American",
                 };
-                const dayFour = {
+                dayFour = {
                     cityname: weatherRES.city.name,
                     Datenanme: weatherRES.list[30].dt_txt,
                     IconImage: weatherRES.list[30].weather[0].icon,
                     Temp: weatherRES.list[30].main.temp,
-                    food: weatherRES.list[30].weather[0].description,
+                    food: mapping[weatherRES.list[30].weather[0].description] || "American",
                 };
-                const dayFive = {
+                dayFive = {
                     cityname: weatherRES.city.name,
                     Datenanme: weatherRES.list[38].dt_txt,
                     IconImage: weatherRES.list[38].weather[0].icon,
                     Temp: weatherRES.list[38].main.temp,
-                    food: weatherRES.list[38].weather[0].description,
+                    food: mapping[weatherRES.list[38].weather[0].description] || "American",
                 };
+                return Promise.all([searchRecipesAPI(dayOne.food), searchRecipesAPI(dayTwo.food), searchRecipesAPI(dayThree.food), searchRecipesAPI(dayFour.food), searchRecipesAPI(dayFive.food)])
+                    .then((responses) => {
+
+                        console.log(responses);
+                        let index = Math.floor(Math.random() * responses[0].data.results.length);
+
+                        // const recipeData = responses[0].data.items.map((day) => ({
+                        dayOne.recipeData = {
+                            FoodPic: responses[0].data.results[index].image || '',
+                            PrepTime: responses[0].data.results[index].readyInMinutes,
+                            Servings: responses[0].data.results[index].servings,
+                            description: responses[0].data.results[index].title,
+                            recipeID: responses[0].data.results[index].id,
+                        }
+                        console.log(dayOne);
 
 
-                return setSearchedRecipes(dayOne, dayTwo, dayThree, dayFour, dayFive);
+                        index = Math.floor(Math.random() * responses[1].data.results.length);
+
+                        // const recipeData = responses[0].data.items.map((day) => ({
+                        dayTwo.recipeData = {
+                            FoodPic: responses[1].data.results[index].image || '',
+                            PrepTime: responses[1].data.results[index].readyInMinutes,
+                            Servings: responses[1].data.results[index].servings,
+                            description: responses[1].data.results[index].title,
+                            recipeID: responses[1].data.results[index].id,
+                        }
+
+                        index = Math.floor(Math.random() * responses[0].data.results.length);
+                        // const recipeData = responses[0].data.items.map((day) => ({
+                        dayThree.recipeData = {
+                            FoodPic: responses[2].data.results[index].image || '',
+                            PrepTime: responses[2].data.results[index].readyInMinutes,
+                            Servings: responses[2].data.results[index].servings,
+                            description: responses[2].data.results[index].title,
+                            recipeID: responses[2].data.results[index].id,
+                        }
+
+                        index = Math.floor(Math.random() * responses[0].data.results.length);
+                        // const recipeData = responses[0].data.items.map((day) => ({
+                        dayFour.recipeData = {
+                            FoodPic: responses[3].data.results[index].image || '',
+                            PrepTime: responses[3].data.results[index].readyInMinutes,
+                            Servings: responses[3].data.results[index].servings,
+                            description: responses[3].data.results[index].title,
+                            recipeID: responses[3].data.results[index].id,
+                        }
+
+                        index = Math.floor(Math.random() * responses[0].data.results.length);
+                        // const recipeData = responses[0].data.items.map((day) => ({
+                        dayFive.recipeData = {
+                            FoodPic: responses[4].data.results[index].image || '',
+                            PrepTime: responses[4].data.results[index].readyInMinutes,
+                            Servings: responses[4].data.results[index].servings,
+                            description: responses[4].data.results[index].title,
+                            recipeID: responses[4].data.results[index].id,
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error.message)
+                    });
             })
-            .then(() => setSearchInput(''))
-            .catch((err) => console.log(err));
-    };
 
+            .then((res) => {
 
-
-}
-
-
-
-
-
-
-
-
-
-
-
-function SearchBooks() {
-    const [searchedBooks, setSearchedBooks] = useState([]);
-    const [searchInput, setSearchInput] = useState('');
-    const userData = useContext(UserInfoContext);
-    const handleFormSubmit = (event) => {
-        event.preventDefault();
-
-        if (!searchInput) {
-            return false;
-        }
-
-        searchGoogleBooks(searchInput)
-            .then(({ data }) => {
-                const bookData = data.items.map((book) => ({
-                    bookId: book.id,
-                    authors: book.volumeInfo.authors || ['No author to display'],
-                    title: book.volumeInfo.title,
-                    description: book.volumeInfo.description,
-                    image: book.volumeInfo.imageLinks?.thumbnail || '',
-                }));
-                console.log(bookData);
-
-                return setSearchedBooks(bookData);
+                return setSearchRecipes(res)
             })
+
             .then(() => setSearchInput(''))
-            .catch((err) => console.log(err));
-    };
-
-    const handleSaveBook = (bookId) => {
-        const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
-
-        const token = AuthService.loggedIn() ? AuthService.getToken() : null;
-
-        if (!token) {
-            return false;
-        }
-
-        saveBook(bookToSave, token)
-            .then(() => userData.getUserData())
             .catch((err) => console.log(err));
     };
 
@@ -122,7 +142,7 @@ function SearchBooks() {
         <>
             <Jumbotron fluid className='text-light bg-dark'>
                 <Container>
-                    <h1>Search for Books!</h1>
+                    <h1>Search for recipes!</h1>
                     <Form onSubmit={handleFormSubmit}>
                         <Form.Row>
                             <Col xs={12} md={8}>
@@ -132,38 +152,37 @@ function SearchBooks() {
                                     onChange={(e) => setSearchInput(e.target.value)}
                                     type='text'
                                     size='lg'
-                                    placeholder='Search for a book'
+                                    placeholder='Search for a location!(City name only)'
                                 />
                             </Col>
                             <Col xs={12} md={4}>
                                 <Button type='submit' variant='success' size='lg'>
                                     Submit Search
-                </Button>
+            </Button>
                             </Col>
                         </Form.Row>
                     </Form>
                 </Container>
             </Jumbotron>
-
             <Container>
-                <h2>{searchedBooks.length ? `Viewing ${searchedBooks.length} results:` : 'Search for a book to begin'}</h2>
+                <h2>{searchRecipes.length ? `Viewing 5 days of weather and recipes:` : 'Search for a town to begin'}</h2>
                 <CardColumns>
-                    {searchedBooks.map((book) => {
+                    {recipe.map((recipe) => {
                         return (
-                            <Card key={book.bookId} border='dark'>
-                                {book.image ? <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
+                            <Card key={recipe.recipeId} border='dark'>
+                                {recipe.image ? <Card.Img src={recipe.image} alt={`The cover for ${recipe.title}`} variant='top' /> : null}
                                 <Card.Body>
-                                    <Card.Title>{book.title}</Card.Title>
-                                    <p className='small'>Authors: {book.authors}</p>
-                                    <Card.Text>{book.description}</Card.Text>
+                                    <Card.Title>{recipe.title}</Card.Title>
+                                    <p className='small'>Authors: {recipe.authors}</p>
+                                    <Card.Text>{recipe.description}</Card.Text>
                                     {userData.username && (
                                         <Button
-                                            disabled={userData.savedBooks?.some((savedBook) => savedBook.bookId === book.bookId)}
+                                            disabled={userData.savedrecipes?.some((savedrecipe) => savedrecipe.recipeId === recipe.recipeId)}
                                             className='btn-block btn-info'
-                                            onClick={() => handleSaveBook(book.bookId)}>
-                                            {userData.savedBooks?.some((savedBook) => savedBook.bookId === book.bookId)
-                                                ? 'This book has already been saved!'
-                                                : 'Save this Book!'}
+                                            onClick={() => handleSaveRecipe(recipe.recipeId)}>
+                                            {userData.savedrecipes?.some((savedrecipe) => savedrecipe.recipeId === recipe.recipeId)
+                                                ? 'This recipe has already been saved!'
+                                                : 'Save this recipe!'}
                                         </Button>
                                     )}
                                 </Card.Body>
@@ -174,6 +193,8 @@ function SearchBooks() {
             </Container>
         </>
     );
-}
 
-export default SearchBooks;
+
+};
+
+export default SearchRecipes;

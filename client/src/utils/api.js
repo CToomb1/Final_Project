@@ -27,12 +27,12 @@ export const deleteRecipe = function (recipeId, token) {
     return axios.delete(`/api/users/books/${recipeId}`, { headers: { authorization: `Bearer ${token}` } });
 };
 
-export const searchLocation = function (query) {
-    return axios.get('http://api.openweathermap.org/data/2.5/weather?zip={zip code},us&appid=bb2771f5bb681a2a7b1c9f5f413832a1&units=imperial', { params: { q: query } });
+export const searchLocationAPI = function (query) {
+    return axios.get('http://api.openweathermap.org/data/2.5/forecast?zip=07083,us&appid=bb2771f5bb681a2a7b1c9f5f413832a1&units=imperial', { params: { q: query } });
 };
 
-export const searchRecipes = function (query) {
-    return axios.get('https://api.spoonacular.com/recipes/search?cuisine=" + foodType + "&apiKey=dca66fb5322341b49c535563addea129&number=100', { params: { q: query } });
+export const searchRecipesAPI = function (query) {
+    return axios.get('https://api.spoonacular.com/recipes/search?cuisine="+ q +"&apiKey=dca66fb5322341b49c535563addea129&number=100', { params: { q: query } });
 };
 
 
