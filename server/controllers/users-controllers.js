@@ -41,7 +41,7 @@ module.exports = {
         const token = signToken(user);
         res.json({ token, user });
     },
-    async Recipe({ user, body }, res) {
+    async saveRecipe({ user, body }, res) {
         console.log(user);
         try {
             const updatedUser = await User.findOneAndUpdate(

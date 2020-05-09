@@ -30,4 +30,4 @@ const recipeSchema = new Schema({
     }
 });
 
-module.exports = locationSchema;
+module.exports = recipeSchema;
