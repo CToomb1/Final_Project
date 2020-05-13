@@ -3,11 +3,12 @@ import { Jumbotron, Container, Row, Col, Form, Button, Card, CardColumns } from 
 
 import UserInfoContext from '../utils/UserInfoContext';
 import AuthService from '../utils/auth';
-import { saveRecipes, searchRecipesAPI, searchLocationAPI } from '../utils/API';
+import { saveRecipe, searchRecipesAPI, searchLocationAPI } from '../utils/API';
 
 function SearchRecipes() {
     const [searchRecipes, setSearchRecipes] = useState([]);
     const [searchInput, setSearchInput] = useState("");
+    const [dayArray, setDayArray] = useState([]);
     const userData = useContext(UserInfoContext);
     const handleFormSubmit = (event) => {
         event.preventDefault();
@@ -31,39 +32,44 @@ function SearchRecipes() {
 
                 dayOne = {
                     cityname: weatherRES.city.name,
-                    Datenanme: weatherRES.list[6].dt_txt,
+                    Datename: weatherRES.list[6].dt_txt,
                     IconImage: weatherRES.list[6].weather[0].icon,
                     Temp: weatherRES.list[6].main.temp,
+                    WeatherDescription: weatherRES.list[6].weather[0].description,
                     food: mapping[weatherRES.list[6].weather[0].description] || "American",
                     recipeData: "",
 
                 };
                 dayTwo = {
                     cityname: weatherRES.city.name,
-                    Datenanme: weatherRES.list[14].dt_txt,
+                    Datename: weatherRES.list[14].dt_txt,
                     IconImage: weatherRES.list[14].weather[0].icon,
                     Temp: weatherRES.list[14].main.temp,
+                    WeatherDescription: weatherRES.list[14].weather[0].description,
                     food: mapping[weatherRES.list[14].weather[0].description] || "American",
                 };
                 dayThree = {
                     cityname: weatherRES.city.name,
-                    Datenanme: weatherRES.list[22].dt_txt,
+                    Datename: weatherRES.list[22].dt_txt,
                     IconImage: weatherRES.list[22].weather[0].icon,
                     Temp: weatherRES.list[22].main.temp,
+                    WeatherDescription: weatherRES.list[22].weather[0].description,
                     food: mapping[weatherRES.list[22].weather[0].description] || "American",
                 };
                 dayFour = {
                     cityname: weatherRES.city.name,
-                    Datenanme: weatherRES.list[30].dt_txt,
+                    Datename: weatherRES.list[30].dt_txt,
                     IconImage: weatherRES.list[30].weather[0].icon,
                     Temp: weatherRES.list[30].main.temp,
+                    WeatherDescription: weatherRES.list[30].weather[0].description,
                     food: mapping[weatherRES.list[30].weather[0].description] || "American",
                 };
                 dayFive = {
                     cityname: weatherRES.city.name,
-                    Datenanme: weatherRES.list[38].dt_txt,
+                    Datename: weatherRES.list[38].dt_txt,
                     IconImage: weatherRES.list[38].weather[0].icon,
                     Temp: weatherRES.list[38].main.temp,
+                    WeatherDescription: weatherRES.list[38].weather[0].description,
                     food: mapping[weatherRES.list[38].weather[0].description] || "American",
                 };
                 return Promise.all([searchRecipesAPI(dayOne.food), searchRecipesAPI(dayTwo.food), searchRecipesAPI(dayThree.food), searchRecipesAPI(dayFour.food), searchRecipesAPI(dayFive.food)])
@@ -123,10 +129,13 @@ function SearchRecipes() {
                             description: responses[4].data.results[index].title,
                             recipeID: responses[4].data.results[index].id,
                         }
+                        return setDayArray([dayOne, dayTwo, dayThree, dayFour, dayFive]);
                     })
+
                     .catch(error => {
                         console.error(error.message)
                     });
+
             })
 
             .then((res) => {
@@ -135,6 +144,24 @@ function SearchRecipes() {
             })
 
             .then(() => setSearchInput(''))
+            .catch((err) => console.log(err));
+    };
+
+    const handleSaveRecipe = (recipeID) => {
+        console.log(recipeID);
+        const recipeToSave = dayArray.find(({ recipeData }) => recipeData.recipeID === recipeID);
+        const { recipeData } = recipeToSave;
+        console.log(recipeData);
+        // get token
+        const token = AuthService.loggedIn() ? AuthService.getToken() : null;
+
+        if (!token) {
+            return false;
+        }
+
+        // send the books data to our api
+        saveRecipe(recipeData, token)
+            .then(() => userData.getUserData())
             .catch((err) => console.log(err));
     };
 
@@ -164,23 +191,28 @@ function SearchRecipes() {
                     </Form>
                 </Container>
             </Jumbotron>
+
+
             <Container>
-                <h2>{searchRecipes.length ? `Viewing 5 days of weather and recipes:` : 'Search for a town to begin'}</h2>
+                <h2>{dayArray.length ? `Viewing your foodcast for ${searchInput}:` : 'Search for a city to begin'}</h2>
                 <CardColumns>
-                    {recipe.map((recipe) => {
+                    {dayArray.map((day) => {
                         return (
-                            <Card key={recipe.recipeId} border='dark'>
-                                {recipe.image ? <Card.Img src={recipe.image} alt={`The cover for ${recipe.title}`} variant='top' /> : null}
+                            <Card key={day.Datename} border='dark'>
                                 <Card.Body>
-                                    <Card.Title>{recipe.title}</Card.Title>
-                                    <p className='small'>Authors: {recipe.authors}</p>
-                                    <Card.Text>{recipe.description}</Card.Text>
+                                    <Card.Title>{day.Datename}</Card.Title>
+                                    {day.IconImage ? <Card.Img src={`http://openweathermap.org/img/w/${day.IconImage}.png`} alt={`Picture of ${day.WeatherDescription}`} variant='top' /> : null}
+                                    <Card.Text >Temperature: {day.Temp}</Card.Text>
+                                    {day.recipeData.FoodPic ? <Card.Img src={`https://spoonacular.com/recipeImages/${day.recipeData.FoodPic}`} alt={`Picture of ${day.recipeData.description}`} variant='top' /> : null}
+                                    <Card.Text >Title: {day.recipeData.description}</Card.Text>
+                                    <Card.Text >Prep time: {day.recipeData.PrepTime} minutes</Card.Text>
+                                    <Card.Text >Servings: {day.recipeData.Servings} people</Card.Text>
                                     {userData.username && (
                                         <Button
-                                            disabled={userData.savedrecipes?.some((savedrecipe) => savedrecipe.recipeId === recipe.recipeId)}
+                                            disabled={userData.savedRecipes?.some((savedRecipe) => savedRecipe.recipeID === day.recipeData.recipeID)}
                                             className='btn-block btn-info'
-                                            onClick={() => handleSaveRecipe(recipe.recipeId)}>
-                                            {userData.savedrecipes?.some((savedrecipe) => savedrecipe.recipeId === recipe.recipeId)
+                                            onClick={() => handleSaveRecipe(day.recipeData.recipeID)}>
+                                            {userData.savedRecipes?.some((savedRecipe) => savedRecipe.recipeID === day.recipeData.recipeID)
                                                 ? 'This recipe has already been saved!'
                                                 : 'Save this recipe!'}
                                         </Button>
@@ -191,6 +223,7 @@ function SearchRecipes() {
                     })}
                 </CardColumns>
             </Container>
+
         </>
     );
 
