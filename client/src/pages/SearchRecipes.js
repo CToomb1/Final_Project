@@ -74,60 +74,61 @@ function SearchRecipes() {
                 };
                 return Promise.all([searchRecipesAPI(dayOne.food), searchRecipesAPI(dayTwo.food), searchRecipesAPI(dayThree.food), searchRecipesAPI(dayFour.food), searchRecipesAPI(dayFive.food)])
                     .then((responses) => {
-
-                        console.log(responses);
+                        setSearchRecipes(responses)
                         let index = Math.floor(Math.random() * responses[0].data.results.length);
 
-                        // const recipeData = responses[0].data.items.map((day) => ({
                         dayOne.recipeData = {
-                            FoodPic: responses[0].data.results[index].image || '',
-                            PrepTime: responses[0].data.results[index].readyInMinutes,
-                            Servings: responses[0].data.results[index].servings,
+                            id: responses[0].data.results[index].id,
                             description: responses[0].data.results[index].title,
-                            recipeID: responses[0].data.results[index].id,
+                            readyInMinutes: responses[0].data.results[index].readyInMinutes,
+                            servings: responses[0].data.results[index].servings,
+                            sourceUrl: responses[0].data.results[index].sourceUrl,
+                            image: responses[0].data.results[index].image || '',
                         }
-                        console.log(dayOne);
-
 
                         index = Math.floor(Math.random() * responses[1].data.results.length);
 
                         // const recipeData = responses[0].data.items.map((day) => ({
                         dayTwo.recipeData = {
-                            FoodPic: responses[1].data.results[index].image || '',
-                            PrepTime: responses[1].data.results[index].readyInMinutes,
-                            Servings: responses[1].data.results[index].servings,
+                            image: responses[1].data.results[index].image || '',
+                            readyInMinutes: responses[1].data.results[index].readyInMinutes,
+                            servings: responses[1].data.results[index].servings,
                             description: responses[1].data.results[index].title,
-                            recipeID: responses[1].data.results[index].id,
+                            id: responses[1].data.results[index].id,
+                            sourceUrl: responses[1].data.results[index].sourceUrl
                         }
 
-                        index = Math.floor(Math.random() * responses[0].data.results.length);
+                        index = Math.floor(Math.random() * responses[2].data.results.length);
                         // const recipeData = responses[0].data.items.map((day) => ({
                         dayThree.recipeData = {
-                            FoodPic: responses[2].data.results[index].image || '',
-                            PrepTime: responses[2].data.results[index].readyInMinutes,
-                            Servings: responses[2].data.results[index].servings,
+                            image: responses[2].data.results[index].image || '',
+                            readyInMinutes: responses[2].data.results[index].readyInMinutes,
+                            servings: responses[2].data.results[index].servings,
                             description: responses[2].data.results[index].title,
-                            recipeID: responses[2].data.results[index].id,
+                            id: responses[2].data.results[index].id,
+                            sourceUrl: responses[2].data.results[index].sourceUrl
                         }
 
-                        index = Math.floor(Math.random() * responses[0].data.results.length);
+                        index = Math.floor(Math.random() * responses[3].data.results.length);
                         // const recipeData = responses[0].data.items.map((day) => ({
                         dayFour.recipeData = {
-                            FoodPic: responses[3].data.results[index].image || '',
-                            PrepTime: responses[3].data.results[index].readyInMinutes,
-                            Servings: responses[3].data.results[index].servings,
+                            image: responses[3].data.results[index].image || '',
+                            readyInMinutes: responses[3].data.results[index].readyInMinutes,
+                            servings: responses[3].data.results[index].servings,
                             description: responses[3].data.results[index].title,
-                            recipeID: responses[3].data.results[index].id,
+                            id: responses[3].data.results[index].id,
+                            sourceUrl: responses[3].data.results[index].sourceUrl
                         }
 
-                        index = Math.floor(Math.random() * responses[0].data.results.length);
+                        index = Math.floor(Math.random() * responses[4].data.results.length);
                         // const recipeData = responses[0].data.items.map((day) => ({
                         dayFive.recipeData = {
-                            FoodPic: responses[4].data.results[index].image || '',
-                            PrepTime: responses[4].data.results[index].readyInMinutes,
-                            Servings: responses[4].data.results[index].servings,
+                            image: responses[4].data.results[index].image || '',
+                            readyInMinutes: responses[4].data.results[index].readyInMinutes,
+                            servings: responses[4].data.results[index].servings,
                             description: responses[4].data.results[index].title,
-                            recipeID: responses[4].data.results[index].id,
+                            id: responses[4].data.results[index].id,
+                            sourceUrl: responses[4].data.results[index].sourceUrl
                         }
                         return setDayArray([dayOne, dayTwo, dayThree, dayFour, dayFive]);
                     })
@@ -137,30 +138,22 @@ function SearchRecipes() {
                     });
 
             })
-
-            .then((res) => {
-
-                return setSearchRecipes(res)
-            })
-
             .then(() => setSearchInput(''))
             .catch((err) => console.log(err));
     };
 
-    const handleSaveRecipe = (recipeID) => {
-        console.log(recipeID);
-        const recipeToSave = dayArray.find(({ recipeData }) => recipeData.recipeID === recipeID);
-        const { recipeData } = recipeToSave;
-        console.log(recipeData);
-        // get token
+    const handleSaveRecipe = (id) => {
+        const recipeDay = dayArray.find(({ recipeData }) => recipeData.id === id);
+        const recipeToSave = recipeDay.recipeData;
+        console.log(recipeToSave);
+
         const token = AuthService.loggedIn() ? AuthService.getToken() : null;
 
         if (!token) {
             return false;
         }
 
-        // send the books data to our api
-        saveRecipe(recipeData, token)
+        saveRecipe(recipeToSave, token)
             .then(() => userData.getUserData())
             .catch((err) => console.log(err));
     };
@@ -198,21 +191,21 @@ function SearchRecipes() {
                 <CardColumns>
                     {dayArray.map((day) => {
                         return (
-                            <Card key={day.Datename} border='dark'>
+                            <Card key={day.recipeData.id} border='dark'>
                                 <Card.Body>
                                     <Card.Title>{day.Datename}</Card.Title>
                                     {day.IconImage ? <Card.Img src={`http://openweathermap.org/img/w/${day.IconImage}.png`} alt={`Picture of ${day.WeatherDescription}`} variant='top' /> : null}
                                     <Card.Text >Temperature: {day.Temp}</Card.Text>
-                                    {day.recipeData.FoodPic ? <Card.Img src={`https://spoonacular.com/recipeImages/${day.recipeData.FoodPic}`} alt={`Picture of ${day.recipeData.description}`} variant='top' /> : null}
+                                    {day.recipeData.image ? <Card.Img src={`https://spoonacular.com/recipeImages/${day.recipeData.image}`} alt={`Picture of ${day.recipeData.description}`} variant='top' /> : null}
                                     <Card.Text >Title: {day.recipeData.description}</Card.Text>
-                                    <Card.Text >Prep time: {day.recipeData.PrepTime} minutes</Card.Text>
-                                    <Card.Text >Servings: {day.recipeData.Servings} people</Card.Text>
+                                    <Card.Text >Prep time: {day.recipeData.readyInMinutes} minutes</Card.Text>
+                                    <Card.Text >servings: {day.recipeData.servings} people</Card.Text>
                                     {userData.username && (
                                         <Button
-                                            disabled={userData.savedRecipes?.some((savedRecipe) => savedRecipe.recipeID === day.recipeData.recipeID)}
+                                            disabled={userData.savedRecipes?.some((savedRecipe) => savedRecipe.id === day.recipeData.id)}
                                             className='btn-block btn-info'
-                                            onClick={() => handleSaveRecipe(day.recipeData.recipeID)}>
-                                            {userData.savedRecipes?.some((savedRecipe) => savedRecipe.recipeID === day.recipeData.recipeID)
+                                            onClick={() => handleSaveRecipe(day.recipeData.id)}>
+                                            {userData.savedRecipes?.some((savedRecipe) => savedRecipe.id === day.recipeData.id)
                                                 ? 'This recipe has already been saved!'
                                                 : 'Save this recipe!'}
                                         </Button>

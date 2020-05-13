@@ -12,7 +12,7 @@ const UserSchema = new Schema(
         },
         password: {
             type: String,
-            validate: [({ length }) => length >= 7, "Password should be longer."],
+            // validate: [({ length }) => length >= 7, "Password should be longer."],
             required: true
         },
 

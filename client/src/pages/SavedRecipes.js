@@ -9,6 +9,7 @@ import AuthService from '../utils/auth';
 function SavedRecipe() {
     const userData = useContext(UserInfoContext);
 
+
     const handleDeleteRecipe = (recipeId) => {
         const token = AuthService.loggedIn() ? AuthService.getToken() : null;
 
@@ -29,19 +30,22 @@ function SavedRecipe() {
             </Jumbotron>
             <Container>
                 <h2>
-                    {userData.savedRecipe.length
-                        ? `Viewing ${userData.savedRecipe.length} saved ${userData.savedRecipe.length === 1 ? 'recipe' : 'Recipe'}:`
+                    {userData.savedRecipes.length
+                        ? `Viewing ${userData.savedRecipes.length} saved ${userData.savedRecipes.length === 1 ? 'recipe' : 'recipes'}:`
                         : 'You have no saved Recipe!'}
                 </h2>
                 <CardColumns>
-                    {userData.savedRecipe.map((recipe) => {
+                    {userData.savedRecipes.map((recipe) => {
                         return (
-                            <Card key={recipe.recipeId} border='dark'>
+                            <Card key={recipe.id} border='dark'>
                                 <Card.Body>
-                                    <Card.Title>{recipe}</Card.Title>
+                                    {recipe.FoodPic ? <Card.Img src={`https://spoonacular.com/recipeImages/${recipe.FoodPic}`} alt={`Picture of ${recipe.description}`} variant='top' /> : null}
+                                    <Card.Text >Title: {recipe.description}</Card.Text>
+                                    <Card.Text >Prep time: {recipe.PrepTime} minutes</Card.Text>
+                                    <Card.Text >Servings: {recipe.Servings} people</Card.Text>
                                     <Button className='btn-block btn-danger' onClick={() => handleDeleteRecipe(recipe.recipeId)}>
                                         Delete this recipe!
-                  </Button>
+                                                    </Button>
                                 </Card.Body>
                             </Card>
                         );

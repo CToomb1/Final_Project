@@ -2,7 +2,7 @@ const { Schema } = require('mongoose');
 
 const recipeSchema = new Schema({
     recipe: {
-        recipeID: {
+        id: {
             type: String,
             required: true,
         },
@@ -10,11 +10,11 @@ const recipeSchema = new Schema({
             type: String,
             required: true,
         },
-        PrepTime: {
+        readyInMinutes: {
             type: String,
             required: true,
         },
-        Servings: {
+        servings: {
             type: String,
             required: true,
         },
@@ -22,7 +22,7 @@ const recipeSchema = new Schema({
             type: String,
 
         },
-        FoodPic: {
+        image: {
             type: String,
         },
 
