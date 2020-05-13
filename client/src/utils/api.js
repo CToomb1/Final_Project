@@ -21,7 +21,7 @@ export const saveRecipe = function (recipeData, token) {
     return axios.put('/api/users', recipeData, { headers: { authorization: `Bearer ${token}` } });
 };
 export const deleteRecipe = function (recipeId, token) {
-    return axios.delete(`/api/users/books/${recipeId}`, { headers: { authorization: `Bearer ${token}` } });
+    return axios.delete(`/api/users/recipeData/${recipeId}`, { headers: { authorization: `Bearer ${token}` } });
 };
 
 export const searchLocationAPI = function (query) {
