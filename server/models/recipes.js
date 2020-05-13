@@ -6,23 +6,23 @@ const recipeSchema = new Schema({
             type: String,
             required: true,
         },
-        title: {
+        description: {
             type: String,
             required: true,
         },
-        readyInMinutes: {
+        PrepTime: {
             type: String,
             required: true,
         },
-        servings: {
+        Servings: {
             type: String,
             required: true,
         },
         sourceUrl: {
             type: String,
-            required: true,
+
         },
-        image: {
+        FoodPic: {
             type: String,
         },
 

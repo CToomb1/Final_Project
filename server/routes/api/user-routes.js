@@ -18,6 +18,6 @@ router.route('/me').get(authMiddleware, getSingleUser);
 
 router.route('/:username').get(getSingleUser);
 
-router.route('/Locations/:id').delete(authMiddleware, deleteRecipe);
+router.route('/recipes/:id').delete(authMiddleware, deleteRecipe);
 
 module.exports = router;
