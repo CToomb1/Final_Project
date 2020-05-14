@@ -23,12 +23,14 @@ module.exports = {
     },
     // create a user, sign a token, and send it back (to client/src/components/SignUpForm.js)
     async createUser({ body }, res) {
+        console.log(body);
         const user = await User.create(body);
 
         if (!user) {
             return res.status(400).json({ message: 'Something is wrong!' });
         }
         const token = signToken(user);
+        console.log(user);
         res.json({ token, user });
     },
     // login a user, sign a token, and send it back (to client/src/components/LoginForm.js)
@@ -55,7 +57,7 @@ module.exports = {
             const updatedUser = await User.findOneAndUpdate(
                 { _id: user._id },
                 { $addToSet: { savedRecipes: body } },
-                { new: true, runValidators: false }
+                { new: true, runValidators: true }
             );
             return res.json(updatedUser);
         } catch (err) {
