@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 
-import UserInfoContext from '../utils/UserInfoContext';
+import UserInfoContext from '../utils/userinfocontext';
 
-import * as API from '../utils/API';
+import * as API from '../utils/api';
 import AuthService from '../utils/auth';
 
 function SavedRecipe() {
