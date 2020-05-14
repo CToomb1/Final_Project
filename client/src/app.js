@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import SearchRecipes from "./pages/searchrecipes";
-import SavedRecipes from "./pages/savedrecipes";
-import Navbar from "./components/navbar";
+import SearchRecipes from "./pages/searchrecipespage";
+import SavedRecipes from "./pages/savedrecipespage";
+import Navbar from "./components/navbarcomponent";
 
-import * as API from "./utils/api";
-import AuthService from "./utils/auth";
+import * as API from "./utils/apiutils";
+import AuthService from "./utils/authutils";
 
-import UserInfoContext from "./utils/userinfocontext";
+import UserInfoContext from "./utils/userinfocontextutils";
 
 function App() {
 

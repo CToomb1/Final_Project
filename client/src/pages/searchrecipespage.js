@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
 import { Jumbotron, Container, Row, Col, Form, Button, Card, CardColumns } from 'react-bootstrap';
 
-import UserInfoContext from '../utils/userinfocontext';
-import AuthService from '../utils/auth';
-import { saveRecipe, searchRecipesAPI, searchLocationAPI } from '../utils/api';
+import UserInfoContext from '../utils/userinfocontextutils';
+import AuthService from '../utils/authutils';
+import { saveRecipe, searchRecipesAPI, searchLocationAPI } from '../utils/apiutils';
 
 function SearchRecipes() {
     const [searchRecipes, setSearchRecipes] = useState([]);

@@ -4,8 +4,8 @@ import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
 import SignUpForm from './signupform';
 import LoginForm from './loginform';
 
-import UserInfoContext from '../utils/userinfocontext';
-import AuthService from '../utils/auth';
+import UserInfoContext from '../utils/userinfocontextutils';
+import AuthService from '../utils/authutils';
 
 function AppNavbar() {
     const [showModal, setShowModal] = useState(false);
