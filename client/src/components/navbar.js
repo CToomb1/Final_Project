@@ -1,10 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
-import SignUpForm from './SignupForm';
-import LoginForm from './LoginForm';
+import SignUpForm from './signupform';
+import LoginForm from './loginform';
 
-import UserInfoContext from '../utils/UserInfoContext';
+import UserInfoContext from '../utils/userinfocontext';
 import AuthService from '../utils/auth';
 
 function AppNavbar() {

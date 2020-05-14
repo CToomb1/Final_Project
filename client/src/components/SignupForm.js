@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 
-import UserInfoContext from '../utils/UserInfoContext';
-import { createUser } from '../utils/API';
+import UserInfoContext from '../utils/userinfocontext';
+import { createUser } from '../utils/api';
 import AuthService from '../utils/auth';
 
 function SignupForm({ handleModalClose }) {
