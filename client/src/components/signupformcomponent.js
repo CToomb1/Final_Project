@@ -3,7 +3,7 @@ import { Form, Button, Alert } from 'react-bootstrap';
 
 import UserInfoContext from '../utils/userinfocontextutils';
 import { createUser } from '../utils/apiutils';
-import AuthService from '../utils/authutilsh';
+import AuthService from '../utils/authutils';
 
 function SignupForm({ handleModalClose }) {
     // set initial form state
