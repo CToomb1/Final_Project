@@ -4,7 +4,7 @@ import SearchRecipes from "./pages/SearchRecipes";
 import SavedRecipes from "./pages/SavedRecipes";
 import Navbar from "./components/navbar";
 
-import * as API from "./utils/API";
+import * as API from "./utils/api";
 import AuthService from "./utils/auth";
 
 import UserInfoContext from "./utils/UserInfoContext";
