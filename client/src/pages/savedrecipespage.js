@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 
-import UserInfoContext from '../utils/userinfocontext';
+import UserInfoContext from '../utils/userinfocontextutils';
 
-import * as API from '../utils/api';
-import AuthService from '../utils/auth';
+import * as API from '../utils/apiutils';
+import AuthService from '../utils/authutils';
 
 function SavedRecipe() {
     const userData = useContext(UserInfoContext);

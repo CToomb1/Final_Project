@@ -8,7 +8,7 @@ const {
     login,
 } = require('../../controllers/users-controllers');
 
-const { authMiddleware } = require('../../utils/auth');
+const { authMiddleware } = require('../../utils/authutils');
 
 router.route('/').get(getAllUsers).post(createUser).put(authMiddleware, saveRecipe);
 
