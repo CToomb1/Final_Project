@@ -2,8 +2,8 @@ import React, { useState, useContext } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 
 import UserInfoContext from '../utils/userinfocontext';
-import { createUser } from '../utils/api';
-import AuthService from '../utils/auth';
+import { createUser } from '../utils/apiutils';
+import AuthService from '../utils/authutilsh';
 
 function SignupForm({ handleModalClose }) {
     // set initial form state

@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
-import SignUpForm from './signupform';
-import LoginForm from './loginform';
+import SignUpForm from './signupformcomponent';
+import LoginForm from './loginformcomponent';
 
 import UserInfoContext from '../utils/userinfocontextutils';
 import AuthService from '../utils/authutils';
