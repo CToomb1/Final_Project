@@ -3,7 +3,7 @@ import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap
 
 import UserInfoContext from '../utils/UserInfoContext';
 
-import * as API from '../utils/API';
+import * as API from '../utils/api';
 import AuthService from '../utils/auth';
 
 function SavedRecipe() {
