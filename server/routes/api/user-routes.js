@@ -1,12 +1,12 @@
 const router = require('express').Router();
 const {
-    createUser,
-    getAllUsers,
-    getSingleUser,
-    saveRecipe,
-    deleteRecipe,
-    login,
-} = require('../../controllers/users-controllers');
+  createUser,
+  getAllUsers,
+  getSingleUser,
+  saveRecipe,
+  deleteRecipe,
+  login,
+} = require('../../controllers/user-controllers');
 
 const { authMiddleware } = require('../../utils/authutils');
 
