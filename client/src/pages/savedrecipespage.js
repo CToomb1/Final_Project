@@ -39,11 +39,11 @@ function SavedRecipe() {
                         return (
                             <Card key={recipe.id} border='dark'>
                                 <Card.Body>
-                                    {recipe.FoodPic ? <Card.Img src={`https://spoonacular.com/recipeImages/${recipe.FoodPic}`} alt={`Picture of ${recipe.description}`} variant='top' /> : null}
+                                    {recipe.image ? <Card.Img src={`https://spoonacular.com/recipeImages/${recipe.image}`} alt={`Picture of ${recipe.description}`} variant='top' /> : null}
                                     <Card.Text >Title: {recipe.description}</Card.Text>
-                                    <Card.Text >Prep time: {recipe.PrepTime} minutes</Card.Text>
-                                    <Card.Text >Servings: {recipe.Servings} people</Card.Text>
-                                    <Button className='btn-block btn-danger' onClick={() => handleDeleteRecipe(recipe.recipeId)}>
+                                    <Card.Text >Prep time: {recipe.readyInMinutes} minutes</Card.Text>
+                                    <Card.Text >Servings: {recipe.servings} people</Card.Text>
+                                    <Button className='btn-block btn-danger' onClick={() => handleDeleteRecipe(recipe.id)}>
                                         Delete this recipe!
                                                     </Button>
                                 </Card.Body>
