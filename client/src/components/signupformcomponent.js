@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 
-import UserInfoContext from '../utils/userinfocontext';
+import UserInfoContext from '../utils/userinfocontextutils';
 import { createUser } from '../utils/apiutils';
 import AuthService from '../utils/authutilsh';
 
