@@ -2,7 +2,7 @@
 import React, { useState, useContext } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 
-import UserInfoContext from '../utils/userinfocontext';
+import UserInfoContext from '../utils/userinfocontextutils';
 import { loginUser } from '../utils/api';
 import AuthService from '../utils/auth';
 
